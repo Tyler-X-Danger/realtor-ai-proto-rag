@@ -39,9 +39,17 @@ const DEMO_RESPONSES = [
     patterns: ['model', 'gpt', 'gemini', 'approved', 'allowed', 'use', 'which'],
     reply: 'Approved models in the AmpAI Gateway: Tier-1 (requires approval) — Claude 3.5 Sonnet, GPT-4o. Tier-2 (self-serve) — GPT-4o-mini, Gemini 1.5 Flash, Claude 3 Haiku. All model usage is logged and attributed to your team slug for budget tracking. Unapproved model calls are blocked at the gateway with a 403.',
   },
+  {
+    patterns: ['vendor', 'claude sonnet', 'sonnet 4', 'token price', 'prompt caching', 'portkey routing', 'routing logic', 'traffic cop', 'gemini flash', 'input cost'],
+    reply: 'Vendor cost-routing matrix (2026): Claude Sonnet 4.6 — $3.00/M input, $15.00/M output, 1M context window. Prompt Caching cuts input to $0.30/M (90% savings) for repeated codebase scans — cache hit rates of 85–95% are typical for IDE workflows. Gemini 1.5 Pro — $1.25/M input, $5.00/M output; native multimodal, $4.50/M tokens/hr cache storage for MLS media batches. Gemini Flash — $0.075/M input for high-velocity autocomplete. Portkey routing logic: autocomplete + syntax checking → Gemini Flash; RAG Q&A + short codegen → GPT-4o-mini; git diff generation + architectural refactoring + complex test pipelines → Claude Sonnet 4.6 with prompt cache enabled.',
+  },
+  {
+    patterns: ['revenue agent', 'marketing agent', 'hr agent', 'multi-agent', 'langgraph', 'llamaindex', 'blueprint', 'commission', 'fair housing', 'crm', 'compliance agent', 'business agent', 'enablement agent'],
+    reply: 'Three multi-agent workflows are deployed for non-technical business units, built on LangGraph + LlamaIndex + Portkey:\n\n1. Client Revenue Agent (team: revenue-ops-agent): Ingests CRM data, sales interaction logs, and local MLS transaction history. Forecasts 30/60/90-day commission pipelines and generates risk-mitigation plays for agents with >20% MoM velocity drop-offs. Delivers daily to Revenue Ops Slack.\n\n2. Consumer Marketing Agent (team: consumer-mktg-agent): Transforms MLS listing metadata into cross-channel social ad creative (Facebook, Instagram, Google Display). Includes a BLOCKING compliance gate using Claude Sonnet 4.6 that validates all copy against the Fair Housing Act and HUD advertising guidance before any asset is published. Escalates to human review if a variant fails after one auto-regeneration pass.\n\n3. HR & Talent Enablement Agent (team: hr-enablement-agent): Real-time Q&A tool for staff queries on corporate policy handbooks, Texas leave-of-absence rules, and engineering interview rubrics (L3–L7 scorecards). Responds via Slack (@ampai-hr) with policy-grounded answers and source citations. Sensitive topics (termination, accommodations) are always escalated to People Ops.',
+  },
 ]
 
-const FALLBACK_REPLY = "I can answer questions about: LLM Gateway rules and token budget caps, MLS schema field mappings, UAT and accessibility compliance requirements, semantic caching configuration, PII scrubbing policies, approved models, and AI Platform team contacts. Try one of those topics!"
+const FALLBACK_REPLY = "I can answer questions about: LLM Gateway rules and token budget caps, MLS schema field mappings, UAT and accessibility compliance requirements, semantic caching configuration, PII scrubbing policies, approved models, AI Platform team contacts, vendor cost-routing matrix (Claude Sonnet 4.6 vs. Gemini vs. GPT-4o-mini pricing), and multi-agent blueprints (Revenue Agent, Consumer Marketing Agent, HR Enablement Agent). Try one of those topics!"
 
 function getDemoReply(message) {
   const lower = message.toLowerCase()

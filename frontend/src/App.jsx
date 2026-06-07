@@ -28,6 +28,25 @@ export default function App() {
           {/* Card A — full width */}
           <TokenAnalyticsCard />
 
+          {/* Executive Value Realization & ROI Dashboard */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">Time Displaced YTD</p>
+              <p className="text-3xl font-bold text-white">14,250 Hours</p>
+              <p className="text-xs text-slate-400 mt-2">Calculated across 800+ active engineering profiles using Claude Code and Windsurf.</p>
+            </div>
+            <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">Infrastructure Cost Avoided</p>
+              <p className="text-3xl font-bold text-white">$420,000</p>
+              <p className="text-xs text-slate-400 mt-2">Driven via Portkey semantic caching and tiered LLM model routing optimization.</p>
+            </div>
+            <div className="bg-slate-800 rounded-xl border border-slate-700 p-5">
+              <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">AI Hub Adoption & Enablement</p>
+              <p className="text-3xl font-bold text-white">312 / 800 Certified</p>
+              <p className="text-xs text-slate-400 mt-2">Engineers who completed the internal micro-certification track and active peer-led workshops.</p>
+            </div>
+          </div>
+
           {/* Cards B and C — side by side */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <GatewayControlCard />
