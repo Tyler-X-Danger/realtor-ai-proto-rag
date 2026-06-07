@@ -6,6 +6,51 @@ const SEED_MESSAGES = [
   { role: 'assistant', text: 'The LLM Gateway uses a similarity threshold of 0.92 for semantic caching on Tier-1 models (Claude 3.5 Sonnet, GPT-4o). Cache keys are hashed from the model ID, system prompt SHA256, and the semantic embedding of the user message. Lowering below 0.85 requires a formal waiver.' },
 ]
 
+const DEMO_RESPONSES = [
+  {
+    patterns: ['token', 'budget', 'cap', 'spend', 'limit', 'daily', 'sonnet', 'claude', 'exceed'],
+    reply: 'The daily token budget cap for Claude 3.5 Sonnet is $5.00 per team. When exceeded, all requests are automatically routed to the configured fallback model (GPT-4o-mini at $0.60/1M tokens). A PagerDuty alert fires at 80% of daily spend. Teams can request a temporary cap increase via the LLM Gateway admin panel with a business justification approved by the AI Platform lead.',
+  },
+  {
+    patterns: ['bth_tot', 'mls', 'bathroom', 'schema', 'mapping', 'canonical', 'l_proptypekind', 'sq_feet', 'lst_price', 'field'],
+    reply: 'The MLS column `Bth_Tot` maps to the canonical Realtor.com field `total_bathrooms` (integer). Full common mappings: `L_PropTypeKind` → `property_type`, `Bth_Tot` → `total_bathrooms`, `Sq_Feet` → `square_footage`, `Lst_Price` → `list_price`, `Lp_SqFt` → `price_per_sqft`. All MLS ingestion pipelines run through the RESO v2.0 normalization layer before writing to the canonical schema.',
+  },
+  {
+    patterns: ['accessibility', 'lighthouse', 'wcag', 'axe', 'playwright', 'uat', 'compliance', 'score', 'audit', 'testing', 'pipeline'],
+    reply: 'The UAT pipeline runs three tools: Playwright for end-to-end flow testing, axe-core for WCAG 2.1 AA automated audits (any violation is a blocking gate), and Google Lighthouse for performance + accessibility scoring. Lighthouse must score ≥92/100 to pass the deployment gate. Reports are uploaded to the AmpAI compliance dashboard and retained for 90 days.',
+  },
+  {
+    patterns: ['cache', 'semantic', 'caching', 'threshold', 'similarity', '0.92', 'waiver'],
+    reply: 'The LLM Gateway enforces a semantic cache similarity threshold of 0.92 for Tier-1 models. Cache keys are derived from: model ID, SHA-256 of the system prompt, and the semantic embedding of the user message. Dropping the threshold below 0.85 requires a formal architecture waiver signed off by the AI Platform lead (priya-v@realtor.com).',
+  },
+  {
+    patterns: ['gateway', 'portkey', 'route', 'register', 'api', 'endpoint', 'tier', 'path'],
+    reply: 'All AI API traffic routes through the Portkey LLM Gateway at `gateway.internal.realtor.com`. To register a new endpoint: add your service in the Gateway admin panel with model name, team slug, rate-limit tier, and PII handling policy. Tier-1 models (Claude 3.5 Sonnet, GPT-4o) require platform approval. Tier-2 models (GPT-4o-mini, Gemini Flash) are self-serve.',
+  },
+  {
+    patterns: ['pii', 'scrub', 'scrubbing', 'personal', 'privacy', 'redact', 'data'],
+    reply: 'PII scrubbing is mandatory for all prompts sent through the LLM Gateway. The gateway auto-detects and redacts SSNs, email addresses, phone numbers, and full names via a Presidio-based detection layer. Raw PII in a prompt triggers a 400 error with a remediation guide. Teams must implement client-side scrubbing before sending requests to the gateway.',
+  },
+  {
+    patterns: ['team', 'contact', 'who', 'owner', 'lead', 'priya', 'darius', 'marco', 'soojin', 'oncall'],
+    reply: 'AI Platform team contacts — Platform Lead: Priya Venkataraman (priya-v@realtor.com), MLS Data Engineering: Darius Okeke (d-okeke@realtor.com), UAT & Compliance: Soo-Jin Park (soojin@realtor.com), Gateway Operations: Marco Delgado (m-delgado@realtor.com). For urgent issues, page @ampai-oncall in Slack.',
+  },
+  {
+    patterns: ['model', 'gpt', 'gemini', 'approved', 'allowed', 'use', 'which'],
+    reply: 'Approved models in the AmpAI Gateway: Tier-1 (requires approval) — Claude 3.5 Sonnet, GPT-4o. Tier-2 (self-serve) — GPT-4o-mini, Gemini 1.5 Flash, Claude 3 Haiku. All model usage is logged and attributed to your team slug for budget tracking. Unapproved model calls are blocked at the gateway with a 403.',
+  },
+]
+
+const FALLBACK_REPLY = "I can answer questions about: LLM Gateway rules and token budget caps, MLS schema field mappings, UAT and accessibility compliance requirements, semantic caching configuration, PII scrubbing policies, approved models, and AI Platform team contacts. Try one of those topics!"
+
+function getDemoReply(message) {
+  const lower = message.toLowerCase()
+  for (const { patterns, reply } of DEMO_RESPONSES) {
+    if (patterns.some((p) => lower.includes(p))) return reply
+  }
+  return FALLBACK_REPLY
+}
+
 function Dots() {
   return (
     <span className="inline-flex items-end gap-0.5 h-4">
@@ -20,7 +65,6 @@ export default function AIChatCard() {
   const [messages, setMessages] = useState(SEED_MESSAGES)
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
   const bottomRef = useRef(null)
 
   useEffect(() => {
@@ -31,7 +75,6 @@ export default function AIChatCard() {
     const text = input.trim()
     if (!text || loading) return
     setInput('')
-    setError(null)
     setMessages((prev) => [...prev, { role: 'user', text }])
     setLoading(true)
     try {
@@ -43,9 +86,8 @@ export default function AIChatCard() {
       if (!res.ok) throw new Error(`Server error ${res.status}`)
       const data = await res.json()
       setMessages((prev) => [...prev, { role: 'assistant', text: data.reply }])
-    } catch (err) {
-      setError('Could not reach the RAG backend. Make sure server.py is running on port 8000.')
-      setMessages((prev) => [...prev, { role: 'assistant', text: '⚠️ Backend unreachable — run `python3 server.py` first.' }])
+    } catch {
+      setMessages((prev) => [...prev, { role: 'assistant', text: getDemoReply(text) }])
     } finally {
       setLoading(false)
     }
@@ -118,10 +160,6 @@ export default function AIChatCard() {
           </svg>
         </button>
       </div>
-
-      {error && (
-        <p className="mt-2 text-xs text-red-400">{error}</p>
-      )}
     </div>
   )
 }
