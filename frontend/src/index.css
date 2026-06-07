@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #0f172a;
+  color: #f1f5f9;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Chat scrollbar */
+.chat-scroll::-webkit-scrollbar { width: 4px; }
+.chat-scroll::-webkit-scrollbar-track { background: #1e293b; }
+.chat-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+
+@keyframes blink {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.dot-1 { animation: blink 1.2s 0s infinite; }
+.dot-2 { animation: blink 1.2s 0.2s infinite; }
+.dot-3 { animation: blink 1.2s 0.4s infinite; }
