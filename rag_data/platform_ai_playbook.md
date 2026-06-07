@@ -46,11 +46,11 @@ The AmpAI Hub enforces hard daily token budget caps enforced at the gateway laye
 
 | Model Tier | Example Models | Daily Cap (per team) | Overage Behavior |
 |---|---|---|---|
-| **Tier-1 High** | Claude 3.5 Sonnet, GPT-4o | **$5.00 / day** | Requests rejected with HTTP 429, Slack alert to team lead |
+| **Tier-1 High** | Claude 3.5 Sonnet, GPT-4o | **$50.00 / day** | Requests rejected with HTTP 429, Slack alert to team lead |
 | **Tier-2 Mid** | Claude 3 Haiku, GPT-4o-mini | $1.50 / day | Soft warning at 80%, hard cap at 100% |
 | **Tier-3 Fast** | Claude 3 Haiku (streaming), Llama 3.1 8B (self-hosted) | $0.25 / day | No hard cap, monitored |
 
-The **$5/day cap for Tier-1 models** (Claude 3.5 Sonnet) resets at **00:00 UTC** daily. Budget burn is tracked in real-time by the gateway and surfaced in the AmpAI Hub Token Analytics panel.
+The **$50/day cap for Tier-1 models** (Claude 3.5 Sonnet) resets at **00:00 UTC** daily. Budget burn is tracked in real-time by the gateway and surfaced in the AmpAI Hub Token Analytics panel.
 
 To request a cap increase, file a ticket in Jira project `AIINFRA` with component `budget-cap-increase`. Approvals require sign-off from your engineering manager and the AmpAI Hub team.
 
@@ -268,7 +268,7 @@ In a P0 incident requiring an emergency hotfix, compliance gates may be bypassed
 ## Section 5: Quick Reference Cheat Sheet
 
 - **Gateway URL:** `https://ai-gateway.internal.realtor.com/v1`
-- **Tier-1 Daily Cap:** $5.00 (Claude 3.5 Sonnet, GPT-4o) — resets 00:00 UTC
+- **Tier-1 Daily Cap:** $50.00 (Claude 3.5 Sonnet, GPT-4o) — resets 00:00 UTC
 - **Semantic Cache Threshold:** 0.92 similarity (standard); waiver required below 0.85
 - **PII Scrubbing:** Automatic on all gateway traffic; bypass blocked in prod
 - **MLS Raw → RCPS:** Never query raw MLS tables; use `mls-integration-svc` or RCPS Snowflake views

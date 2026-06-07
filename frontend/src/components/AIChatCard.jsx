@@ -9,7 +9,7 @@ const SEED_MESSAGES = [
 const DEMO_RESPONSES = [
   {
     patterns: ['token', 'budget', 'cap', 'spend', 'limit', 'daily', 'sonnet', 'claude', 'exceed'],
-    reply: 'The daily token budget cap for Claude 3.5 Sonnet is $5.00 per team. When exceeded, all requests are automatically routed to the configured fallback model (GPT-4o-mini at $0.60/1M tokens). A PagerDuty alert fires at 80% of daily spend. Teams can request a temporary cap increase via the LLM Gateway admin panel with a business justification approved by the AI Platform lead.',
+    reply: 'The daily token budget cap for Claude 3.5 Sonnet is $50.00 per team. When exceeded, all requests are automatically routed to the configured fallback model (GPT-4o-mini at $0.60/1M tokens). A PagerDuty alert fires at 80% of daily spend. Teams can request a temporary cap increase via the LLM Gateway admin panel with a business justification approved by the AI Platform lead.',
   },
   {
     patterns: ['bth_tot', 'mls', 'bathroom', 'schema', 'mapping', 'canonical', 'l_proptypekind', 'sq_feet', 'lst_price', 'field'],

@@ -1,6 +1,6 @@
 const teams = [
-  { slug: 'search-ai', spend: 1.84, calls: 412, cap: 5.0 },
-  { slug: 'listing-intelligence', spend: 0.97, calls: 289, cap: 5.0 },
+  { slug: 'search-ai', spend: 1.84, calls: 412, cap: 50.0 },
+  { slug: 'listing-intelligence', spend: 0.97, calls: 289, cap: 50.0 },
   { slug: 'lead-scoring', spend: 0.43, calls: 103, cap: 1.5 },
   { slug: 'copy-gen', spend: 0.18, calls: 43, cap: 1.5 },
 ]
@@ -22,7 +22,7 @@ function BurnBar({ value, max, warn = 0.7, danger = 0.9 }) {
 export default function TokenAnalyticsCard() {
   const totalSpend = teams.reduce((s, t) => s + t.spend, 0)
   const totalCalls = teams.reduce((s, t) => s + t.calls, 0)
-  const tierOneCap = 5.0
+  const tierOneCap = 50.0
   const burnPct = ((totalSpend / tierOneCap) * 100).toFixed(0)
 
   return (
